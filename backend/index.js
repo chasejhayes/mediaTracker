@@ -1,12 +1,15 @@
 const express = require('express')
+const cors = require('cors')
 const app = express();
 
+
 app.use(express.json())
+app.use(cors())
 
 let media = [
-    {title: "Perfume", dateFinished: "4/5/26", rating: "5/5 stars"},
-    {title: "Body Double", dateFinished: "6/4/26", rating: "3.5/5 stars"},
-    {title: "Malazan Book 2", dateFinished: "5/22/26", rating: "3.5/5 stars" }
+    {title: "Perfume", dateFinished: "4/5/26", rating: "5/5 stars", id: Math.random()},
+    {title: "Body Double", dateFinished: "6/4/26", rating: "3.5/5 stars", id: Math.random()},
+    {title: "Malazan Book 2", dateFinished: "5/22/26", rating: "3.5/5 stars", id: Math.random() }
 ]
 
 app.get('/api/media/', (request, response) => {
@@ -19,12 +22,13 @@ app.post('/api/media', (request, response) => {
     let newMedia = {
         "title": mediaData.title,
         "dateFinished": mediaData.dateFinished,
-        "rating": mediaData.rating
+        "rating": mediaData.rating,
+        "id": Math.random().toString(36).slice(2)
     }
 
     media = media.concat(newMedia)
 
-    response.status(201).json(mediaData)
+    response.status(201).json(newMedia)
 
 
 })
