@@ -33,6 +33,16 @@ app.post('/api/media', (request, response) => {
 
 })
 
+app.delete('/api/media/:id', (req, res) => {
+    const id = req.params.id
+
+    media = media.filter(item => item.id !== id)
+
+    res.status(204).end()
+
+
+})
+
 const PORT = 3001
 
 app.listen(PORT, () => {

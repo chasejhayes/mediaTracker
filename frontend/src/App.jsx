@@ -43,12 +43,11 @@ function App() {
   }
 
   function deleteMedia(id){
-    e.preventDefault()
 
-    axios.delete(`http://localhost:3001/api/media/${id}`){
-      console.log("x")
-
-    }
+    axios.delete(`http://localhost:3001/api/media/${id}`)
+    .then(() => {
+      setMedia(media.filter(item=>item.id !== id))
+    })
   }
 
 
@@ -80,7 +79,7 @@ function App() {
             <h1>{media.title}</h1>
             <p>Date Finished: {media.dateFinished}</p>
             <p>Rating: {media.rating}</p>
-            <button>Delete</button>
+            <button onClick={() => deleteMedia(media.id)}>Delete</button>
           </li>
         )}
       </ul>
