@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import './style.css'
 
 
 
@@ -8,7 +9,7 @@ function App() {
   const [newTitle, setNewTitle] = useState('')
   const [newRating, setNewRating] = useState('')
   const [newFinishDate, setNewFinishDate] = useState('')
-  const [newID, setNewID] = useState('')
+  const [showForm, setShowForm] = useState(false)
   
  
 
@@ -40,6 +41,7 @@ function App() {
 
         console.log(media)
       })
+    setShowForm(false)
   }
 
   function deleteMedia(id){
@@ -50,12 +52,12 @@ function App() {
     })
   }
 
+  // what's happening in 'put'?
+  // front end makes a request to back end
+  // axios sends it
 
-
-  return (
-    <div>
-      <h1>Test</h1>
-      <form onSubmit={addMedia}>
+  const loginForm = ()=> (
+    <form onSubmit={addMedia}>
         <label>Title:
           <input
             value={newTitle}
@@ -73,14 +75,36 @@ function App() {
         </label>
         <button type="submit">add</button>
       </form>
-      <ul>
+
+  )
+
+ 
+
+  function handleShowForm(){
+
+    if(showForm==false){
+      setShowForm(true);
+    } else {
+      setShowForm(false)
+    }
+
+  }
+
+  return (
+    <div>
+      <h1>My Media Tracker</h1>
+      <button onClick={handleShowForm}>Add Media</button>
+      {showForm && loginForm()}
+      <ul id='card'>
         {media.map((media) => 
-          <li key={media.id}>
-            <h1>{media.title}</h1>
-            <p>Date Finished: {media.dateFinished}</p>
-            <p>Rating: {media.rating}</p>
-            <button onClick={() => deleteMedia(media.id)}>Delete</button>
-          </li>
+          <div className='list_item'>
+            <li key={media.id}>
+              <h1>{media.title}</h1>
+              <p>Date Finished: {media.dateFinished}</p>
+              <p>Rating: {media.rating}</p>
+              <button onClick={() => deleteMedia(media.id)}>Delete</button>
+            </li>
+          </div>
         )}
       </ul>
     </div>
