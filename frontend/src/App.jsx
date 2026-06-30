@@ -77,6 +77,9 @@ function App() {
   )
 
   function sortByRating(){
+    return setMedia(
+      media.sort((a, b) => b.rating - a.rating)
+    )
 
   }
 
@@ -111,7 +114,7 @@ function App() {
     } else if (selectedValue === 'al') {
       console.log('its alphabetical')
     } else if (selectedValue === 'rating'){
-      console.log('its rating')
+      sortByRating()
     } else if (selectedValue === 'finished'){
       console.log('its finished')
     }
