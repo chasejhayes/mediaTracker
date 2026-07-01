@@ -80,8 +80,16 @@ function App() {
     return setMedia(
       media.sort((a, b) => b.rating - a.rating)
     )
-
   }
+
+  function sortByTitle(){
+    return setMedia(
+      media.toSorted((a,b) => a.title.localeCompare(b.title))
+    )
+  }
+  
+
+
 
   const mediaDisplay = () => (
     <div>
@@ -102,9 +110,6 @@ function App() {
 
   )
 
-  // function handleSortAlpha(){
-  //   setSortAlpha(true)
-  // }
 
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
@@ -112,7 +117,8 @@ function App() {
     if (selectedValue === 'default') {
       console.log(media)
     } else if (selectedValue === 'al') {
-      console.log('its alphabetical')
+      sortByTitle()
+      console.log(media)
     } else if (selectedValue === 'rating'){
       sortByRating()
     } else if (selectedValue === 'finished'){
