@@ -87,6 +87,12 @@ function App() {
       media.toSorted((a,b) => a.title.localeCompare(b.title))
     )
   }
+
+  function sortByDate(){
+    return setMedia(
+      media.sort((a, b) => new Date(b.dateFinished) - new Date(a.dateFinished))
+    )
+  }
   
 
 
@@ -122,7 +128,8 @@ function App() {
     } else if (selectedValue === 'rating'){
       sortByRating()
     } else if (selectedValue === 'finished'){
-      console.log('its finished')
+      sortByDate()
+      console.log(media)
     }
   }
 
