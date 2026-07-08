@@ -11,6 +11,7 @@ function App() {
   const [newFinishDate, setNewFinishDate] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [sort, setSort] = useState('default')
+  const [filter, setFilter] = useState('default')
 
 
 
@@ -20,6 +21,8 @@ function App() {
         setMedia(response.data)
       })
   }, [])
+
+
 
   function addMedia(e) {
     e.preventDefault()
@@ -73,33 +76,24 @@ function App() {
       </label>
       <button type="submit">add</button>
     </form>
-
   )
 
-  function sortByRating(){
-    return setMedia(
-      media.sort((a, b) => b.rating - a.rating)
-    )
+
+  function handleShowForm() {
+    if (showForm == false) {
+      setShowForm(true);
+    } else {
+      setShowForm(false)
+    }
   }
 
-  function sortByTitle(){
-    return setMedia(
-      media.toSorted((a,b) => a.title.localeCompare(b.title))
-    )
-  }
-
-  function sortByDate(){
-    return setMedia(
-      media.sort((a, b) => new Date(b.dateFinished) - new Date(a.dateFinished))
-    )
-  }
-  
-
+  const editDialog = () => (
+    <dialog>Test</dialog>
+  )
 
 
   const mediaDisplay = () => (
     <div>
-      {/* <div>{test()}</div> */}
       <ul id='card'>
         {media.map((media) =>
           <div className='list_item'>
@@ -107,7 +101,11 @@ function App() {
               <h1>{media.title}</h1>
               <p>Date Finished: {media.dateFinished}</p>
               <p>Rating: {media.rating}</p>
-              <button onClick={() => deleteMedia(media.id)}>Delete</button>
+              <button onClick={() => deleteMedia(media.id)}
+              >Delete</button>
+              <button onClick={() => editMedia(media.id)}>
+                Edit
+              </button>
             </li>
           </div>
         )}
@@ -125,30 +123,44 @@ function App() {
     } else if (selectedValue === 'al') {
       sortByTitle()
       console.log(media)
-    } else if (selectedValue === 'rating'){
+    } else if (selectedValue === 'rating') {
       sortByRating()
-    } else if (selectedValue === 'finished'){
+    } else if (selectedValue === 'finished') {
       sortByDate()
       console.log(media)
     }
   }
 
-
-  function handleShowForm() {
-
-    if (showForm == false) {
-      setShowForm(true);
-    } else {
-      setShowForm(false)
+  const handleFilterChange = (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === 'default') {
+      console.log(media)
+    } else if (selectedValue === "one"){
+      console.log("one")
     }
+
   }
+
+  const filterMenu = () => (
+    <div>
+      <label htmlFor="media">Filter by Rating</label>
+      <select name="media" id="media" value={filter} onChange={handleFilterChange}>
+        <option value="default">All</option>
+        <option value="one">1 Star</option>
+        <option value="two">2 Star</option>
+        <option value="three">3 Star</option>
+        <option value="four">4 Star</option>
+        <option value="five">5 Star</option>
+      </select>
+    </div>
+  )
 
 
   const sortMenu = () => (
     <div>
-      <label htmlFor="media" >Sort by:</label>
+      <label htmlFor="media">Sort by:</label>
       <select name="media" id="media" value={sort} onChange={handleSortChange}>
-        <option value="default">Default</option>
+        <option value="default"></option>
         <option value="al">Alphabetical</option>
         <option value='rating'>Rating</option>
         <option value="finished">Finished</option>
@@ -156,14 +168,30 @@ function App() {
     </div>
   )
 
+  function sortByRating() {
+    return setMedia(
+      media.sort((a, b) => b.rating - a.rating)
+    )
+  }
 
+  function sortByTitle() {
+    return setMedia(
+      media.toSorted((a, b) => a.title.localeCompare(b.title))
+    )
+  }
 
+  function sortByDate() {
+    return setMedia(
+      media.sort((a, b) => new Date(b.dateFinished) - new Date(a.dateFinished))
+    )
+  }
 
   return (
     <div>
       <h1>My Media Tracker</h1>
       <button onClick={handleShowForm}>Add Media</button>
       {sortMenu()}
+      {filterMenu()}
       {showForm && loginForm()}
       {mediaDisplay()}
 
@@ -172,3 +200,14 @@ function App() {
 }
 
 export default App
+
+
+
+// go through fullstackopen lesson to add put that can be tested in postman
+// make a form (not pop up for now) that can be tied to the edit button
+// connect the submitted form data to the put request
+// patch?
+
+// Filter
+// Only show certain ratings
+// So on render only display those == selection

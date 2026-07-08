@@ -16,6 +16,7 @@ app.get('/api/media/', (request, response) => {
     response.json(media)
 })
 
+
 app.post('/api/media', (request, response) => {
     let mediaData = request.body;
 
