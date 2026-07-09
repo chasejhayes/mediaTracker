@@ -9,11 +9,26 @@ app.use(cors())
 let media = [
     {title: "Perfume", dateFinished: "4/5/26", rating: 5, id: Math.random()},
     {title: "Body Double", dateFinished: "6/4/26", rating: 9, id: Math.random()},
-    {title: "Malazan Book 2", dateFinished: "5/22/26", rating: 1, id: Math.random() }
+    {title: "Malazan Book 2", dateFinished: "5/22/26", rating: 1, id: 3 }
 ]
 
 app.get('/api/media/', (request, response) => {
     response.json(media)
+})
+
+app.patch('/api/media/:id', (req, res) => {
+    const id = Number(req.params.id)
+
+    media = media.map(item => 
+        item.id === id
+        ? {...item, ...req.body}
+        : item
+    )
+
+    const updatedMedia = media.find(item =>
+        item.id === id
+    )
+    res.json(updatedMedia)
 })
 
 

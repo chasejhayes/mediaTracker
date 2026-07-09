@@ -15,6 +15,15 @@ li{
 
 }
 
+/* h1{
+    background-color: maroon;
+} */
+
+#header_div{
+    background-color: maroon;
+    padding: 10px;
+}
+
 *{
     background-color: whitesmoke;
 }

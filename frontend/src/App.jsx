@@ -22,6 +22,21 @@ function App() {
       })
   }, [])
 
+  function editRating(id){
+    axios.patch(
+      `http://localhost:3001/api/media/${id}`,
+      {
+        rating: 5
+      }
+    )
+    .then(response => {
+      console.log(response.data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+
 
 
   function addMedia(e) {
@@ -87,9 +102,6 @@ function App() {
     }
   }
 
-  const editDialog = () => (
-    <dialog>Test</dialog>
-  )
 
 
   const mediaDisplay = () => (
@@ -98,14 +110,14 @@ function App() {
         {media.map((media) =>
           <div className='list_item'>
             <li key={media.id}>
-              <h1>{media.title}</h1>
+              <h2>{media.title}</h2>
               <p>Date Finished: {media.dateFinished}</p>
               <p>Rating: {media.rating}</p>
               <button onClick={() => deleteMedia(media.id)}
               >Delete</button>
-              <button onClick={() => editMedia(media.id)}>
+              {/* <button onClick={() => editMedia(media.id)}>
                 Edit
-              </button>
+              </button> */}
             </li>
           </div>
         )}
@@ -135,10 +147,9 @@ function App() {
     const selectedValue = e.target.value;
     if (selectedValue === 'default') {
       console.log(media)
-    } else if (selectedValue === "one"){
+    } else if (selectedValue === "one") {
       console.log("one")
     }
-
   }
 
   const filterMenu = () => (
@@ -186,14 +197,18 @@ function App() {
     )
   }
 
+
   return (
     <div>
-      <h1>My Media Tracker</h1>
+      <div id="header_div">
+        <h1>My Media Tracker</h1>
+      </div>
       <button onClick={handleShowForm}>Add Media</button>
       {sortMenu()}
       {filterMenu()}
       {showForm && loginForm()}
       {mediaDisplay()}
+      {editRating(3)}
 
     </div>
   )
