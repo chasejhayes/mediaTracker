@@ -12,6 +12,7 @@ function App() {
   const [showForm, setShowForm] = useState(false)
   const [sort, setSort] = useState('default')
   const [filter, setFilter] = useState('default')
+  const [showEditForm, setShowEditForm] = useState(true)
 
 
 
@@ -22,20 +23,7 @@ function App() {
       })
   }, [])
 
-  function editRating(id){
-    axios.patch(
-      `http://localhost:3001/api/media/${id}`,
-      {
-        rating: 5
-      }
-    )
-    .then(response => {
-      console.log(response.data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  }
+
 
 
 
@@ -93,6 +81,20 @@ function App() {
     </form>
   )
 
+  const editForm = (id) => (
+    <form onSubmit={editRating(id)}>
+       <label> Rating:
+        <input
+        value={newRating}
+        onChange={(e) =>setNewRating(e.target.value)}
+        />
+       </label>
+       <button type="submit">
+        Update Rating
+       </button>
+    </form>
+  )
+
 
   function handleShowForm() {
     if (showForm == false) {
@@ -115,9 +117,9 @@ function App() {
               <p>Rating: {media.rating}</p>
               <button onClick={() => deleteMedia(media.id)}
               >Delete</button>
-              {/* <button onClick={() => editMedia(media.id)}>
+              <button onClick={() => editForm(media.id)}>
                 Edit
-              </button> */}
+              </button>
             </li>
           </div>
         )}
@@ -126,6 +128,20 @@ function App() {
 
   )
 
+  function editRating(id) {
+    axios.patch(
+      `http://localhost:3001/api/media/${id}`,
+    )
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  // make 
+  // should run 'editRating' onSubmit
 
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
@@ -208,7 +224,8 @@ function App() {
       {filterMenu()}
       {showForm && loginForm()}
       {mediaDisplay()}
-      {editRating(3)}
+      {editForm(3)}
+
 
     </div>
   )
