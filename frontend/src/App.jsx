@@ -13,7 +13,7 @@ function App() {
   const [sort, setSort] = useState('default')
   const [filter, setFilter] = useState('default')
   const [showEditForm, setShowEditForm] = useState(false)
-  const [id, setId] = useState("")
+  const [newId, setNewId] = useState("")
 
 
 
@@ -82,19 +82,42 @@ function App() {
     </form>
   )
 
-  const editForm = (id) => (
-    <form onSubmit={editRating(id)}>
-       <label> Rating:
+  const editForm = () => (
+    <form onSubmit={editRating}>
+      <label> Rating:
         <input
-        value={newRating}
-        onChange={(e) =>setNewRating(e.target.value)}
+          value={newRating}
+          onChange={(e) => setNewRating(e.target.value)}
         />
-       </label>
-       <button type="submit">
+      </label>
+      <button type="submit">
         Update Rating
-       </button>
+      </button>
     </form>
   )
+
+  function editRating(e) {
+    e.preventDefault()
+    let id = newId;
+    console.log(id)
+    axios.patch(
+      `http://localhost:3001/api/media/${id}`,
+      {
+        rating: newRating
+      }
+    )
+      .then(response => {
+        setMedia(media.map(item =>
+          item.id === id
+          ? response.data 
+          : item
+        ))
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
 
 
   function handleShowForm() {
@@ -105,8 +128,8 @@ function App() {
     }
   }
 
-  function handleShowEditForm(){
-    if (showEditForm == false){
+  function handleShowEditForm() {
+    if (showEditForm == false) {
       setShowEditForm(true)
     } else {
       setShowEditForm(false)
@@ -125,7 +148,7 @@ function App() {
               <p>Rating: {media.rating}</p>
               <button onClick={() => deleteMedia(media.id)}
               >Delete</button>
-              <button onClick={() =>{setId(media.id); handleShowEditForm()}}>
+              <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
                 Edit
               </button>
             </li>
@@ -136,20 +159,8 @@ function App() {
 
   )
 
-  function editRating(id) {
-    axios.patch(
-      `http://localhost:3001/api/media/${id}`,
-    )
-      .then(response => {
-        console.log(response.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }
 
-  // make 
-  // should run 'editRating' onSubmit
+
 
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
