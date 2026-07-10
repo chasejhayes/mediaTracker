@@ -12,7 +12,8 @@ function App() {
   const [showForm, setShowForm] = useState(false)
   const [sort, setSort] = useState('default')
   const [filter, setFilter] = useState('default')
-  const [showEditForm, setShowEditForm] = useState(true)
+  const [showEditForm, setShowEditForm] = useState(false)
+  const [id, setId] = useState("")
 
 
 
@@ -104,6 +105,13 @@ function App() {
     }
   }
 
+  function handleShowEditForm(){
+    if (showEditForm == false){
+      setShowEditForm(true)
+    } else {
+      setShowEditForm(false)
+    }
+  }
 
 
   const mediaDisplay = () => (
@@ -117,7 +125,7 @@ function App() {
               <p>Rating: {media.rating}</p>
               <button onClick={() => deleteMedia(media.id)}
               >Delete</button>
-              <button onClick={() => editForm(media.id)}>
+              <button onClick={() =>{setId(media.id); handleShowEditForm()}}>
                 Edit
               </button>
             </li>
@@ -224,7 +232,7 @@ function App() {
       {filterMenu()}
       {showForm && loginForm()}
       {mediaDisplay()}
-      {editForm(3)}
+      {showEditForm && editForm()}
 
 
     </div>
