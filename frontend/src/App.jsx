@@ -15,6 +15,7 @@ function App() {
   const [toggleFilter, setToggleFilter] = useState(false)
   const [showEditForm, setShowEditForm] = useState(false)
   const [newId, setNewId] = useState("")
+  const [test, setTest] = useState("")
 
 
 
@@ -214,14 +215,7 @@ function App() {
     }
   }
 
-  // const handleFilterChange = (e) => {
-  //   const selectedValue = e.target.value;
-  //   if (selectedValue === 'default') {
-  //     console.log(media)
-  //   } else if (selectedValue === "one") {
-  //     console.log("one")
-  //   }
-  // }
+
 
   const handleFilterChange = (e) => {
     const selectedValue = e.target.value;
@@ -247,10 +241,6 @@ function App() {
     }
   }
 
-  // not working because setting the media pairs down the list and doesn't refill it, must take from a state that's not being changed
-
-  // filter on/off state
-  // filter state taking from media
 
   const filterMenu = () => (
     <div>
@@ -297,6 +287,11 @@ function App() {
     )
   }
 
+  const searchBar = () => (
+    <label htmlFor="">Search:
+    <input value={test} onChange={(e) => setTest(e.target.value)} /></label>
+  )
+
 
   return (
     <div>
@@ -306,6 +301,8 @@ function App() {
       <button onClick={handleShowForm}>Add Media</button>
       {sortMenu()}
       {filterMenu()}
+      {searchBar()}
+      {test}
       {toggleFilter && filteredMediaDisplay()}
       {showForm && loginForm()}
       {!toggleFilter && mediaDisplay()}
