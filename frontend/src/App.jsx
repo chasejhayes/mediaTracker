@@ -12,6 +12,7 @@ function App() {
   const [showForm, setShowForm] = useState(false)
   const [sort, setSort] = useState('default')
   const [filter, setFilter] = useState('default')
+  const [toggleFilter, setToggleFilter] = useState(false)
   const [showEditForm, setShowEditForm] = useState(false)
   const [newId, setNewId] = useState("")
 
@@ -92,14 +93,14 @@ function App() {
       </label>
       <label>Title:
         <input
-        value={newTitle}
-        onChange={(e) => setNewTitle(e.target.value)}
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
         />
       </label>
       <label>
-        <input 
-        value={newFinishDate}
-        onChange={(e) => setNewFinishDate(e.target.value)}
+        <input
+          value={newFinishDate}
+          onChange={(e) => setNewFinishDate(e.target.value)}
         />
       </label>
       <button type="submit">
@@ -124,8 +125,8 @@ function App() {
       .then(response => {
         setMedia(media.map(item =>
           item.id === id
-          ? response.data 
-          : item
+            ? response.data
+            : item
         ))
       })
       .catch(error => {
@@ -171,7 +172,27 @@ function App() {
         )}
       </ul>
     </div>
+  )
 
+  const filteredMediaDisplay = () => (
+        <div>
+      <ul id='card'>
+        {filter.map((media) =>
+          <div className='list_item'>
+            <li key={media.id}>
+              <h2>{media.title}</h2>
+              <p>Date Finished: {media.dateFinished}</p>
+              <p>Rating: {media.rating}</p>
+              <button onClick={() => deleteMedia(media.id)}
+              >Delete</button>
+              <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
+                Edit
+              </button>
+            </li>
+          </div>
+        )}
+      </ul>
+    </div>
   )
 
 
@@ -193,19 +214,48 @@ function App() {
     }
   }
 
+  // const handleFilterChange = (e) => {
+  //   const selectedValue = e.target.value;
+  //   if (selectedValue === 'default') {
+  //     console.log(media)
+  //   } else if (selectedValue === "one") {
+  //     console.log("one")
+  //   }
+  // }
+
   const handleFilterChange = (e) => {
     const selectedValue = e.target.value;
     if (selectedValue === 'default') {
-      console.log(media)
+      setToggleFilter(false)
     } else if (selectedValue === "one") {
-      console.log("one")
+      setToggleFilter(true)
+      return setFilter(media.filter(media => media.rating === 1))
+    }
+    else if (selectedValue === "two") {
+      setToggleFilter(true)
+      return setFilter(media.filter(media => media.rating === 2))
+    } else if (selectedValue === "three") {
+      setToggleFilter(true)
+      return setFilter(media.filter(media => media.rating === 3))
+    }
+    else if (selectedValue === "four") {
+      setToggleFilter(true)
+      return setFilter(media.filter(media => media.rating === 4))
+    } else if (selectedValue === "five") {
+      setToggleFilter(true)
+      return setFilter(media.filter(media => media.rating === 5))
     }
   }
+
+  // not working because setting the media pairs down the list and doesn't refill it, must take from a state that's not being changed
+
+  // filter on/off state
+  // filter state taking from media
 
   const filterMenu = () => (
     <div>
       <label htmlFor="media">Filter by Rating</label>
-      <select name="media" id="media" value={filter} onChange={handleFilterChange}>
+      <select name="media" id="media" onChange={handleFilterChange}>
         <option value="default">All</option>
         <option value="one">1 Star</option>
         <option value="two">2 Star</option>
@@ -256,8 +306,9 @@ function App() {
       <button onClick={handleShowForm}>Add Media</button>
       {sortMenu()}
       {filterMenu()}
+      {toggleFilter && filteredMediaDisplay()}
       {showForm && loginForm()}
-      {mediaDisplay()}
+      {!toggleFilter && mediaDisplay()}
       {showEditForm && editForm()}
 
 

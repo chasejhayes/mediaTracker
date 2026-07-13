@@ -7,9 +7,11 @@ app.use(express.json())
 app.use(cors())
 
 let media = [
-    {title: "Perfume", dateFinished: "4/5/26", rating: 5, id: Math.random()},
-    {title: "Body Double", dateFinished: "6/4/26", rating: 9, id: Math.random()},
-    {title: "Malazan Book 2", dateFinished: "5/22/26", rating: 1, id: 3 }
+    {title: "Perfume", dateFinished: "4/5/26", rating:5, id: Math.random()},
+    {title: "Body Double", dateFinished: "6/4/26", rating:3, id: Math.random()},
+    {title: "Malazan Book 2", dateFinished: "5/22/26", rating:1, id: 3 },
+    {title: "Stalin", dateFinished: "5/22/1990", rating:2, id: 10 },
+    {title: "King of the World", dateFinished: "5/01/19", rating:1, id:9 }
 ]
 
 app.get('/api/media/', (request, response) => {
