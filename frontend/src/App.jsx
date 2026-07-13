@@ -90,8 +90,20 @@ function App() {
           onChange={(e) => setNewRating(e.target.value)}
         />
       </label>
+      <label>Title:
+        <input
+        value={newTitle}
+        onChange={(e) => setNewTitle(e.target.value)}
+        />
+      </label>
+      <label>
+        <input 
+        value={newFinishDate}
+        onChange={(e) => setNewFinishDate(e.target.value)}
+        />
+      </label>
       <button type="submit">
-        Update Rating
+        Enter
       </button>
     </form>
   )
@@ -100,10 +112,13 @@ function App() {
     e.preventDefault()
     let id = newId;
     console.log(id)
+
     axios.patch(
       `http://localhost:3001/api/media/${id}`,
       {
-        rating: newRating
+        rating: newRating,
+        title: newTitle,
+        dateFinished: newFinishDate
       }
     )
       .then(response => {
