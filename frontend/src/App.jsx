@@ -16,6 +16,9 @@ function App() {
   const [showEditForm, setShowEditForm] = useState(false)
   const [newId, setNewId] = useState("")
   const [test, setTest] = useState("")
+  const [searchArr, setSearchArr] = useState([])
+  const [toggleSearch, setToggleSearch] = useState(false)
+
 
 
 
@@ -176,7 +179,7 @@ function App() {
   )
 
   const filteredMediaDisplay = () => (
-        <div>
+    <div>
       <ul id='card'>
         {filter.map((media) =>
           <div className='list_item'>
@@ -242,6 +245,7 @@ function App() {
   }
 
 
+
   const filterMenu = () => (
     <div>
       <label htmlFor="media">Filter by Rating</label>
@@ -287,11 +291,45 @@ function App() {
     )
   }
 
+
+
+
   const searchBar = () => (
     <label htmlFor="">Search:
-    <input value={test} onChange={(e) => setTest(e.target.value)} /></label>
+      <input value={test} onChange={(e) => handleSearchChange(e)} /></label>
   )
 
+  const handleSearchChange = (e) => {
+    setToggleSearch(true)
+    setTest(e.target.value)
+    let filtered = media.filter(media => media.title.startsWith(e.target.value))
+    setSearchArr(filtered)
+    if (e.target.value === "") {
+      setToggleSearch(false)
+    }
+  }
+
+
+  const searchedMediaDisplay = () => (
+    <div>
+      <ul id='card'>
+        {searchArr.map((media) =>
+          <div className='list_item'>
+            <li key={media.id}>
+              <h2>{media.title}</h2>
+              <p>Date Finished: {media.dateFinished}</p>
+              <p>Rating: {media.rating}</p>
+              <button onClick={() => deleteMedia(media.id)}
+              >Delete</button>
+              <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
+                Edit
+              </button>
+            </li>
+          </div>
+        )}
+      </ul>
+    </div>
+  )
 
   return (
     <div>
@@ -302,10 +340,12 @@ function App() {
       {sortMenu()}
       {filterMenu()}
       {searchBar()}
+
       {test}
       {toggleFilter && filteredMediaDisplay()}
       {showForm && loginForm()}
-      {!toggleFilter && mediaDisplay()}
+      {!toggleFilter && !toggleSearch && mediaDisplay()}
+      {toggleSearch && searchedMediaDisplay()}
       {showEditForm && editForm()}
 
 
@@ -316,12 +356,3 @@ function App() {
 export default App
 
 
-
-// go through fullstackopen lesson to add put that can be tested in postman
-// make a form (not pop up for now) that can be tied to the edit button
-// connect the submitted form data to the put request
-// patch?
-
-// Filter
-// Only show certain ratings
-// So on render only display those == selection

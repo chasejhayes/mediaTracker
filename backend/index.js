@@ -8,6 +8,8 @@ app.use(cors())
 
 let media = [
     {title: "Perfume", dateFinished: "4/5/26", rating:5, id: Math.random()},
+     {title: "Perfame", dateFinished: "4/5/26", rating:5, id: Math.random()},
+      {title: "Perfumt", dateFinished: "4/5/26", rating:5, id: Math.random()},
     {title: "Body Double", dateFinished: "6/4/26", rating:3, id: Math.random()},
     {title: "Malazan Book 2", dateFinished: "5/22/26", rating:1, id: 3 },
     {title: "Stalin", dateFinished: "5/22/1990", rating:2, id: 10 },
