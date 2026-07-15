@@ -157,10 +157,18 @@ function App() {
   }
 
 
-  const mediaDisplay = () => (
+  const mediaDisplay = () => {
+    let displayType = media;
+    if(toggleFilter){
+      displayType = filter
+    }else if (toggleSearch){
+      displayType = searchArr
+    }
+    
+    return (
     <div>
       <ul id='card'>
-        {media.map((media) =>
+        {displayType.map((media) =>
           <div className='list_item'>
             <li key={media.id}>
               <h2>{media.title}</h2>
@@ -177,27 +185,50 @@ function App() {
       </ul>
     </div>
   )
+}
 
-  const filteredMediaDisplay = () => (
-    <div>
-      <ul id='card'>
-        {filter.map((media) =>
-          <div className='list_item'>
-            <li key={media.id}>
-              <h2>{media.title}</h2>
-              <p>Date Finished: {media.dateFinished}</p>
-              <p>Rating: {media.rating}</p>
-              <button onClick={() => deleteMedia(media.id)}
-              >Delete</button>
-              <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
-                Edit
-              </button>
-            </li>
-          </div>
-        )}
-      </ul>
-    </div>
-  )
+  // const filteredMediaDisplay = () => (
+  //   <div>
+  //     <ul id='card'>
+  //       {filter.map((media) =>
+  //         <div className='list_item'>
+  //           <li key={media.id}>
+  //             <h2>{media.title}</h2>
+  //             <p>Date Finished: {media.dateFinished}</p>
+  //             <p>Rating: {media.rating}</p>
+  //             <button onClick={() => deleteMedia(media.id)}
+  //             >Delete</button>
+  //             <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
+  //               Edit
+  //             </button>
+  //           </li>
+  //         </div>
+  //       )}
+  //     </ul>
+  //   </div>
+  // )
+
+
+  // const searchedMediaDisplay = () => {
+  //     (<div>
+  //       <ul id='card'>
+  //         {searchArr.map((media) =>
+  //           <div className='list_item'>
+  //             <li key={media.id}>
+  //               <h2>{media.title}</h2>
+  //               <p>Date Finished: {media.dateFinished}</p>
+  //               <p>Rating: {media.rating}</p>
+  //               <button onClick={() => deleteMedia(media.id)}
+  //               >Delete</button>
+  //               <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
+  //                 Edit
+  //               </button>
+  //             </li>
+  //           </div>
+  //         )}
+  //       </ul>
+  //     </div>)
+  // }
 
 
 
@@ -310,26 +341,6 @@ function App() {
   }
 
 
-  const searchedMediaDisplay = () => (
-    <div>
-      <ul id='card'>
-        {searchArr.map((media) =>
-          <div className='list_item'>
-            <li key={media.id}>
-              <h2>{media.title}</h2>
-              <p>Date Finished: {media.dateFinished}</p>
-              <p>Rating: {media.rating}</p>
-              <button onClick={() => deleteMedia(media.id)}
-              >Delete</button>
-              <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
-                Edit
-              </button>
-            </li>
-          </div>
-        )}
-      </ul>
-    </div>
-  )
 
   return (
     <div>
@@ -342,10 +353,11 @@ function App() {
       {searchBar()}
 
       {test}
-      {toggleFilter && filteredMediaDisplay()}
+      {/* {toggleFilter && filteredMediaDisplay()} */}
       {showForm && loginForm()}
-      {!toggleFilter && !toggleSearch && mediaDisplay()}
-      {toggleSearch && searchedMediaDisplay()}
+      {mediaDisplay()}
+      {/* {!toggleFilter && !toggleSearch && mediaDisplay()} */}
+      {/* {toggleSearch && searchedMediaDisplay()} */}
       {showEditForm && editForm()}
 
 
