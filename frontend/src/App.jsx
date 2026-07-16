@@ -3,6 +3,16 @@ import axios from 'axios'
 import './style.css'
 
 
+  const Header = ({ text, id }) => {
+    return (
+      <div id={id}>
+        <h1>{text}</h1>
+      </div>
+    )
+  }
+
+
+
 
 function App() {
   const [media, setMedia] = useState([])
@@ -156,79 +166,35 @@ function App() {
     }
   }
 
-
   const mediaDisplay = () => {
     let displayType = media;
-    if(toggleFilter){
+    if (toggleFilter) {
       displayType = filter
-    }else if (toggleSearch){
+    } else if (toggleSearch) {
       displayType = searchArr
     }
-    
+
     return (
-    <div>
-      <ul id='card'>
-        {displayType.map((media) =>
-          <div className='list_item'>
-            <li key={media.id}>
-              <h2>{media.title}</h2>
-              <p>Date Finished: {media.dateFinished}</p>
-              <p>Rating: {media.rating}</p>
-              <button onClick={() => deleteMedia(media.id)}
-              >Delete</button>
-              <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
-                Edit
-              </button>
-            </li>
-          </div>
-        )}
-      </ul>
-    </div>
-  )
-}
-
-  // const filteredMediaDisplay = () => (
-  //   <div>
-  //     <ul id='card'>
-  //       {filter.map((media) =>
-  //         <div className='list_item'>
-  //           <li key={media.id}>
-  //             <h2>{media.title}</h2>
-  //             <p>Date Finished: {media.dateFinished}</p>
-  //             <p>Rating: {media.rating}</p>
-  //             <button onClick={() => deleteMedia(media.id)}
-  //             >Delete</button>
-  //             <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
-  //               Edit
-  //             </button>
-  //           </li>
-  //         </div>
-  //       )}
-  //     </ul>
-  //   </div>
-  // )
-
-
-  // const searchedMediaDisplay = () => {
-  //     (<div>
-  //       <ul id='card'>
-  //         {searchArr.map((media) =>
-  //           <div className='list_item'>
-  //             <li key={media.id}>
-  //               <h2>{media.title}</h2>
-  //               <p>Date Finished: {media.dateFinished}</p>
-  //               <p>Rating: {media.rating}</p>
-  //               <button onClick={() => deleteMedia(media.id)}
-  //               >Delete</button>
-  //               <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
-  //                 Edit
-  //               </button>
-  //             </li>
-  //           </div>
-  //         )}
-  //       </ul>
-  //     </div>)
-  // }
+      <div>
+        <ul id='card'>
+          {displayType.map((media) =>
+            <div className='list_item'>
+              <li key={media.id}>
+                <h2>{media.title}</h2>
+                <p>Date Finished: {media.dateFinished}</p>
+                <p>Rating: {media.rating}</p>
+                <button onClick={() => deleteMedia(media.id)}
+                >Delete</button>
+                <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
+                  Edit
+                </button>
+              </li>
+            </div>
+          )}
+        </ul>
+      </div>
+    )
+  }
 
 
 
@@ -344,20 +310,13 @@ function App() {
 
   return (
     <div>
-      <div id="header_div">
-        <h1>My Media Tracker</h1>
-      </div>
+      <Header text="My media" id="header_div" />
       <button onClick={handleShowForm}>Add Media</button>
       {sortMenu()}
       {filterMenu()}
       {searchBar()}
-
-      {test}
-      {/* {toggleFilter && filteredMediaDisplay()} */}
       {showForm && loginForm()}
       {mediaDisplay()}
-      {/* {!toggleFilter && !toggleSearch && mediaDisplay()} */}
-      {/* {toggleSearch && searchedMediaDisplay()} */}
       {showEditForm && editForm()}
 
 
