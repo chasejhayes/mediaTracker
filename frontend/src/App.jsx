@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import './style.css'
 
-
   const Header = ({ text, id }) => {
     return (
       <div id={id}>
@@ -10,6 +9,30 @@ import './style.css'
       </div>
     )
   }
+
+
+  const Button = ({ onClick, text }) => {
+    return (
+    <button onClick={onClick}>{text}</button>
+    )
+  }
+
+
+  const SortMenu = ({ options, selectedValue, onChange, text, htmlFor }) => (
+    <div>
+      <label htmlFor={htmlFor}>{text}</label>
+      <select name="media" id="media" value={selectedValue} onChange={onChange}>
+        <option value="">Select an Options...</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  )
+
+ 
 
 
 
@@ -45,14 +68,11 @@ function App() {
 
   function addMedia(e) {
     e.preventDefault()
-
-
     let titleObject = {
       title: newTitle,
       rating: newRating,
       dateFinished: newFinishDate
     }
-
     axios.post('http://localhost:3001/api/media', titleObject)
       .then(res => {
         console.log(res)
@@ -68,7 +88,6 @@ function App() {
   }
 
   function deleteMedia(id) {
-
     axios.delete(`http://localhost:3001/api/media/${id}`)
       .then(() => {
         setMedia(media.filter(item => item.id !== id))
@@ -76,7 +95,7 @@ function App() {
   }
 
 
-  const loginForm = () => (
+  const addMediaForm = () => (
     <form onSubmit={addMedia}>
       <label>Title:
         <input
@@ -122,6 +141,12 @@ function App() {
       </button>
     </form>
   )
+
+    const sortOptions = [
+    { value: "al", label: "Alphabetical"},
+    { value: "rating", label: "Rating"},
+    { value: "finished", label: "Finished"}
+  ]
 
   function editRating(e) {
     e.preventDefault()
@@ -258,17 +283,6 @@ function App() {
   )
 
 
-  const sortMenu = () => (
-    <div>
-      <label htmlFor="media">Sort by:</label>
-      <select name="media" id="media" value={sort} onChange={handleSortChange}>
-        <option value="default"></option>
-        <option value="al">Alphabetical</option>
-        <option value='rating'>Rating</option>
-        <option value="finished">Finished</option>
-      </select>
-    </div>
-  )
 
   function sortByRating() {
     return setMedia(
@@ -288,6 +302,17 @@ function App() {
     )
   }
 
+  //     const SortMenu = ({  }) => (
+  //   <div>
+  //     <label htmlFor="media">Sort by:</label>
+  //     <select name="media" id="media" value={sort} onChange={handleSortChange}>
+  //       <option value="default"></option>
+  //       <option value="al">Alphabetical</option>
+  //       <option value='rating'>Rating</option>
+  //       <option value="finished">Finished</option>
+  //     </select>
+  //   </div>
+  // )
 
 
 
@@ -311,11 +336,11 @@ function App() {
   return (
     <div>
       <Header text="My media" id="header_div" />
-      <button onClick={handleShowForm}>Add Media</button>
-      {sortMenu()}
+      <Button text="Add Media" onClick={handleShowForm}/>
+       <SortMenu text="Sort By:" htmlFor="media" onChange={handleSortChange} value={sort} options={sortOptions} />
       {filterMenu()}
       {searchBar()}
-      {showForm && loginForm()}
+      {showForm && addMediaForm()}
       {mediaDisplay()}
       {showEditForm && editForm()}
 
