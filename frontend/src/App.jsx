@@ -2,37 +2,65 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import './style.css'
 
-  const Header = ({ text, id }) => {
-    return (
-      <div id={id}>
-        <h1>{text}</h1>
-      </div>
-    )
-  }
-
-
-  const Button = ({ onClick, text }) => {
-    return (
-    <button onClick={onClick}>{text}</button>
-    )
-  }
-
-
-  const SortMenu = ({ options, selectedValue, onChange, text, htmlFor }) => (
-    <div>
-      <label htmlFor={htmlFor}>{text}</label>
-      <select name="media" id="media" value={selectedValue} onChange={onChange}>
-        <option value="">Select an Options...</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+const Header = ({ text, id }) => {
+  return (
+    <div id={id}>
+      <h1>{text}</h1>
     </div>
   )
+}
 
- 
+
+const Button = ({ onClick, text }) => {
+  return (
+    <button onClick={onClick}>{text}</button>
+  )
+}
+
+
+const SortMenu = ({ options, selectedValue, onChange, text, htmlFor }) => (
+  <div>
+    <label htmlFor={htmlFor}>{text}</label>
+    <select name="media" id="media" value={selectedValue} onChange={onChange}>
+      <option value="">Select an Options...</option>
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  </div>
+)
+
+function UserForm({
+  onSubmit,
+  newTitle,
+  setNewTitle,
+  newRating,
+  setNewRating,
+  newFinishDate,
+  setNewFinishDate }) {
+  return (
+    <form onSubmit={onSubmit}>
+      <label>Title:
+        <input
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)} />
+      </label>
+      <label>Rating:
+        <input
+          value={newRating}
+          onChange={(e) => setNewRating(e.target.value)} />
+      </label>
+      <label>Finish Date:
+        <input
+          value={newFinishDate}
+          onChange={(e) => setNewFinishDate(e.target.value)} />
+      </label>
+      <button type="submit">add</button>
+    </form>
+  )
+}
 
 
 
@@ -61,9 +89,6 @@ function App() {
         setMedia(response.data)
       })
   }, [])
-
-
-
 
 
   function addMedia(e) {
@@ -95,6 +120,8 @@ function App() {
   }
 
 
+
+
   const addMediaForm = () => (
     <form onSubmit={addMedia}>
       <label>Title:
@@ -115,6 +142,8 @@ function App() {
       <button type="submit">add</button>
     </form>
   )
+
+
 
   const editForm = () => (
     <form onSubmit={editRating}>
@@ -142,10 +171,12 @@ function App() {
     </form>
   )
 
-    const sortOptions = [
-    { value: "al", label: "Alphabetical"},
-    { value: "rating", label: "Rating"},
-    { value: "finished", label: "Finished"}
+
+
+  const sortOptions = [
+    { value: "al", label: "Alphabetical" },
+    { value: "rating", label: "Rating" },
+    { value: "finished", label: "Finished" }
   ]
 
   function editRating(e) {
@@ -302,19 +333,6 @@ function App() {
     )
   }
 
-  //     const SortMenu = ({  }) => (
-  //   <div>
-  //     <label htmlFor="media">Sort by:</label>
-  //     <select name="media" id="media" value={sort} onChange={handleSortChange}>
-  //       <option value="default"></option>
-  //       <option value="al">Alphabetical</option>
-  //       <option value='rating'>Rating</option>
-  //       <option value="finished">Finished</option>
-  //     </select>
-  //   </div>
-  // )
-
-
 
   const searchBar = () => (
     <label htmlFor="">Search:
@@ -336,11 +354,13 @@ function App() {
   return (
     <div>
       <Header text="My media" id="header_div" />
-      <Button text="Add Media" onClick={handleShowForm}/>
-       <SortMenu text="Sort By:" htmlFor="media" onChange={handleSortChange} value={sort} options={sortOptions} />
+      <Button text="Add Media" onClick={handleShowForm} />
+      <SortMenu text="Sort By:" htmlFor="media" onChange=
+        {handleSortChange} value={sort} options={sortOptions} />
+      <UserForm onSubmit={addMedia} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate} />
       {filterMenu()}
       {searchBar()}
-      {showForm && addMediaForm()}
+      {/* {showForm && addMediaForm()} */}
       {mediaDisplay()}
       {showEditForm && editForm()}
 
