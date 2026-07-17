@@ -40,6 +40,7 @@ function UserForm({
   setNewRating,
   newFinishDate,
   setNewFinishDate }) {
+    
   return (
     <form onSubmit={onSubmit}>
       <label>Title:
@@ -59,6 +60,13 @@ function UserForm({
       </label>
       <button type="submit">add</button>
     </form>
+  )
+}
+
+function SearchBar({test, handleSearchChange}){
+  return (
+      <label htmlFor="">Search:
+      <input value={test} onChange={(e) => handleSearchChange(e)} /></label>
   )
 }
 
@@ -120,56 +128,36 @@ function App() {
   }
 
 
-
-
-  const addMediaForm = () => (
-    <form onSubmit={addMedia}>
-      <label>Title:
-        <input
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)} />
-      </label>
-      <label>Rating:
-        <input
-          value={newRating}
-          onChange={(e) => setNewRating(e.target.value)} />
-      </label>
-      <label>Finish Date:
-        <input
-          value={newFinishDate}
-          onChange={(e) => setNewFinishDate(e.target.value)} />
-      </label>
-      <button type="submit">add</button>
-    </form>
-  )
+  
 
 
 
-  const editForm = () => (
-    <form onSubmit={editRating}>
-      <label> Rating:
-        <input
-          value={newRating}
-          onChange={(e) => setNewRating(e.target.value)}
-        />
-      </label>
-      <label>Title:
-        <input
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-        />
-      </label>
-      <label>
-        <input
-          value={newFinishDate}
-          onChange={(e) => setNewFinishDate(e.target.value)}
-        />
-      </label>
-      <button type="submit">
-        Enter
-      </button>
-    </form>
-  )
+
+  // const editForm = () => (
+  //   <form onSubmit={editRating}>
+  //     <label> Rating:
+  //       <input
+  //         value={newRating}
+  //         onChange={(e) => setNewRating(e.target.value)}
+  //       />
+  //     </label>
+  //     <label>Title:
+  //       <input
+  //         value={newTitle}
+  //         onChange={(e) => setNewTitle(e.target.value)}
+  //       />
+  //     </label>
+  //     <label>
+  //       <input
+  //         value={newFinishDate}
+  //         onChange={(e) => setNewFinishDate(e.target.value)}
+  //       />
+  //     </label>
+  //     <button type="submit">
+  //       Enter
+  //     </button>
+  //   </form>
+  // )
 
 
 
@@ -356,13 +344,18 @@ function App() {
       <Header text="My media" id="header_div" />
       <Button text="Add Media" onClick={handleShowForm} />
       <SortMenu text="Sort By:" htmlFor="media" onChange=
-        {handleSortChange} value={sort} options={sortOptions} />
+      {handleSortChange} value={sort} options={sortOptions} />
+
       <UserForm onSubmit={addMedia} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate} />
+
+      <UserForm onSubmit={editRating} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate} />
+
+      <SearchBar value={test} handleSearchChange={handleSearchChange} />
+
       {filterMenu()}
-      {searchBar()}
       {/* {showForm && addMediaForm()} */}
       {mediaDisplay()}
-      {showEditForm && editForm()}
+      {/* {showEditForm && editForm()} */}
 
 
     </div>
