@@ -39,37 +39,91 @@ function UserForm({
   newRating,
   setNewRating,
   newFinishDate,
-  setNewFinishDate }) {
-    
+  setNewFinishDate,
+  showForm
+  }) {
+  
+  if(showForm === true)
   return (
-    <form onSubmit={onSubmit}>
-      <label>Title:
-        <input
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)} />
-      </label>
-      <label>Rating:
-        <input
-          value={newRating}
-          onChange={(e) => setNewRating(e.target.value)} />
-      </label>
-      <label>Finish Date:
-        <input
-          value={newFinishDate}
-          onChange={(e) => setNewFinishDate(e.target.value)} />
-      </label>
-      <button type="submit">add</button>
-    </form>
+    <div>
+      <form onSubmit={onSubmit}>
+        <label>Title:
+          <input
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)} />
+        </label>
+        <label>Rating:
+          <input
+            value={newRating}
+            onChange={(e) => setNewRating(e.target.value)} />
+        </label>
+        <label>Finish Date:
+          <input
+            value={newFinishDate}
+            onChange={(e) => setNewFinishDate(e.target.value)} />
+        </label>
+        <button type="submit">add</button>
+      </form>
+    </div>
   )
 }
 
-function SearchBar({test, handleSearchChange}){
+function SearchBar({ test, handleSearchChange }) {
   return (
-      <label htmlFor="">Search:
+    <label htmlFor="">Search:
       <input value={test} onChange={(e) => handleSearchChange(e)} /></label>
   )
 }
 
+
+function FilterMenu({ onChange }){
+
+  return (
+     <div>
+      <label htmlFor="media">Filter by Rating</label>
+      <select name="media" id="media" onChange={onChange}>
+        <option value="default">All</option>
+        <option value="one">1 Star</option>
+        <option value="two">2 Star</option>
+        <option value="three">3 Star</option>
+        <option value="four">4 Star</option>
+        <option value="five">5 Star</option>
+      </select>
+    </div>
+  )
+
+}
+
+function MediaDisplay(){
+    let displayType = media;
+    if (toggleFilter) {
+      displayType = filter
+    } else if (toggleSearch) {
+      displayType = searchArr
+    }
+
+    return (
+      <div>
+        <ul id='card'>
+          {{displayType}.map((media) =>
+            <div className='list_item'>
+              <li key={media.id}>
+                <h2>{media.title}</h2>
+                <p>Date Finished: {media.dateFinished}</p>
+                <p>Rating: {media.rating}</p>
+                <button onClick={() => deleteMedia(media.id)}
+                >Delete</button>
+                <button onClick={() => { setNewId(media.id); handleShowEditForm() }}>
+                  Edit
+                </button>
+              </li>
+            </div>
+          )}
+        </ul>
+      </div>
+    )
+
+}
 
 
 
@@ -88,6 +142,7 @@ function App() {
   const [searchArr, setSearchArr] = useState([])
   const [toggleSearch, setToggleSearch] = useState(false)
 
+  const [displayType, setDisplayType] = useState("media")
 
 
 
@@ -127,46 +182,6 @@ function App() {
       })
   }
 
-
-  
-
-
-
-
-  // const editForm = () => (
-  //   <form onSubmit={editRating}>
-  //     <label> Rating:
-  //       <input
-  //         value={newRating}
-  //         onChange={(e) => setNewRating(e.target.value)}
-  //       />
-  //     </label>
-  //     <label>Title:
-  //       <input
-  //         value={newTitle}
-  //         onChange={(e) => setNewTitle(e.target.value)}
-  //       />
-  //     </label>
-  //     <label>
-  //       <input
-  //         value={newFinishDate}
-  //         onChange={(e) => setNewFinishDate(e.target.value)}
-  //       />
-  //     </label>
-  //     <button type="submit">
-  //       Enter
-  //     </button>
-  //   </form>
-  // )
-
-
-
-  const sortOptions = [
-    { value: "al", label: "Alphabetical" },
-    { value: "rating", label: "Rating" },
-    { value: "finished", label: "Finished" }
-  ]
-
   function editRating(e) {
     e.preventDefault()
     let id = newId;
@@ -192,6 +207,12 @@ function App() {
       })
   }
 
+
+  const sortOptions = [
+    { value: "al", label: "Alphabetical" },
+    { value: "rating", label: "Rating" },
+    { value: "finished", label: "Finished" }
+  ]
 
 
   function handleShowForm() {
@@ -243,23 +264,6 @@ function App() {
 
 
 
-  const handleSortChange = (e) => {
-    const selectedValue = e.target.value;
-    setSort(selectedValue)
-    if (selectedValue === 'default') {
-      console.log(media)
-    } else if (selectedValue === 'al') {
-      sortByTitle()
-      console.log(media)
-    } else if (selectedValue === 'rating') {
-      sortByRating()
-    } else if (selectedValue === 'finished') {
-      sortByDate()
-      console.log(media)
-    }
-  }
-
-
 
   const handleFilterChange = (e) => {
     const selectedValue = e.target.value;
@@ -285,21 +289,21 @@ function App() {
     }
   }
 
-
-
-  const filterMenu = () => (
-    <div>
-      <label htmlFor="media">Filter by Rating</label>
-      <select name="media" id="media" onChange={handleFilterChange}>
-        <option value="default">All</option>
-        <option value="one">1 Star</option>
-        <option value="two">2 Star</option>
-        <option value="three">3 Star</option>
-        <option value="four">4 Star</option>
-        <option value="five">5 Star</option>
-      </select>
-    </div>
-  )
+    const handleSortChange = (e) => {
+    const selectedValue = e.target.value;
+    setSort(selectedValue)
+    if (selectedValue === 'default') {
+      console.log(media)
+    } else if (selectedValue === 'al') {
+      sortByTitle()
+      console.log(media)
+    } else if (selectedValue === 'rating') {
+      sortByRating()
+    } else if (selectedValue === 'finished') {
+      sortByDate()
+      console.log(media)
+    }
+  }
 
 
 
@@ -322,10 +326,7 @@ function App() {
   }
 
 
-  const searchBar = () => (
-    <label htmlFor="">Search:
-      <input value={test} onChange={(e) => handleSearchChange(e)} /></label>
-  )
+
 
   const handleSearchChange = (e) => {
     setToggleSearch(true)
@@ -344,15 +345,15 @@ function App() {
       <Header text="My media" id="header_div" />
       <Button text="Add Media" onClick={handleShowForm} />
       <SortMenu text="Sort By:" htmlFor="media" onChange=
-      {handleSortChange} value={sort} options={sortOptions} />
+        {handleSortChange} value={sort} options={sortOptions} />
 
-      <UserForm onSubmit={addMedia} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate} />
+      <UserForm onSubmit={addMedia} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate}/>
 
-      <UserForm onSubmit={editRating} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate} />
+      <UserForm onSubmit={editRating} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate} showForm={showForm} />
 
       <SearchBar value={test} handleSearchChange={handleSearchChange} />
 
-      {filterMenu()}
+      <FilterMenu onChange={handleFilterChange}/>
       {/* {showForm && addMediaForm()} */}
       {mediaDisplay()}
       {/* {showEditForm && editForm()} */}
