@@ -205,6 +205,7 @@ function App() {
       .catch(error => {
         console.log(error)
       })
+      setShowEditForm(false)
   }
 
 
@@ -347,9 +348,9 @@ function App() {
       <SortMenu text="Sort By:" htmlFor="media" onChange=
         {handleSortChange} value={sort} options={sortOptions} />
 
-      <UserForm onSubmit={addMedia} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate}/>
+      <UserForm onSubmit={addMedia} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate} showForm={showForm} />
 
-      <UserForm onSubmit={editRating} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate} showForm={showForm} />
+      <UserForm onSubmit={editRating} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate} showForm={showEditForm} />
 
       <SearchBar value={test} handleSearchChange={handleSearchChange} />
 
