@@ -1,5 +1,5 @@
 
-function FilterMenu({ media, setFilter, setToggleFilter}) {
+export default function FilterMenu({ media, setFilter, setToggleFilter}) {
   
 
     const handleFilterChange = (e) => {
@@ -44,4 +44,3 @@ function FilterMenu({ media, setFilter, setToggleFilter}) {
 }
 
 
-export { FilterMenu }

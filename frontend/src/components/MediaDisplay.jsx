@@ -6,9 +6,17 @@ export default function MediaDisplay({
   searchArr,
   deleteMedia,
   setNewId,
-  handleShowEditForm
+  showEditForm,
+  setShowEditForm
 
 }) {
+ function handleShowEditForm() {
+    if (showEditForm == false) {
+      setShowEditForm(true)
+    } else {
+      setShowEditForm(false)
+    }
+  }
   let displayType = media;
   if (toggleFilter) {
     displayType = filter
