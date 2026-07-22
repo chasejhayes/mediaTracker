@@ -11,7 +11,7 @@ import UserForm from './components/UserForm.jsx'
 import MediaDisplay from './components/MediaDisplay.jsx'
 import Loading from './components/Loading.jsx'
 import Empty from './components/Empty.jsx'
-
+import Error from './components/Error.jsx'
 
 
 
@@ -32,6 +32,7 @@ function App() {
   const [toggleFilter, setToggleFilter] = useState(false)
   const [loading, setLoading] = useState(true)
   const [empty, setEmpty] = useState(false)
+  const [error, setError] = useState('')
 
   const BASE_URL = import.meta.env.VITE_API_URL
 
@@ -49,6 +50,7 @@ function App() {
       })
       .catch((error) => {
         console.log(error)
+        setError(error)
       })
       .finally(() => {
         setLoading(false)
@@ -116,8 +118,6 @@ function App() {
 
 
 
-
-
   return (
     <div>
       <Header text="Media Tracker" id="header_div" />
@@ -135,6 +135,8 @@ function App() {
       <Loading text="Loading content" loading={loading} />
 
       <Empty text="Add Media!" empty={empty}/>
+
+      <Error error={error} text={`${error}`}/>
 
       <MediaDisplay media={media} toggleFilter={toggleFilter} filter={filter} toggleSearch={toggleSearch} searchArr={searchArr} deleteMedia={deleteMedia} setNewId={setNewId} showEditForm={showEditForm} setShowEditForm={setShowEditForm} />
 
