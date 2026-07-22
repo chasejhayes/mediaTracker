@@ -9,6 +9,8 @@ import FilterMenu from './components/FilterMenu.jsx'
 import SortMenu from './components/SortMenu.jsx'
 import UserForm from './components/UserForm.jsx'
 import MediaDisplay from './components/MediaDisplay.jsx'
+import Loading from './components/Loading.jsx'
+
 
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
   const [toggleSearch, setToggleSearch] = useState(false)
   const [filter, setFilter] = useState('default')
   const [toggleFilter, setToggleFilter] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const BASE_URL = import.meta.env.VITE_API_URL
 
@@ -35,7 +38,10 @@ function App() {
       .then((response) => {
         setMedia(response.data)
       })
-  }, [BASE_URL])
+      .finally(() => {
+      setLoading(false)
+      })
+      }, [BASE_URL])
 
   function addMedia(e) {
     e.preventDefault()
@@ -107,6 +113,8 @@ function App() {
       <SearchBar value={test} setToggleSearch={setToggleSearch} setTest={setTest} setSearchArr={setSearchArr} media={media} />
 
       <FilterMenu media={media} filter={filter} setFilter={setFilter} toggleFilter={toggleFilter} setToggleFilter={setToggleFilter} />
+
+      <Loading text="Loading content" loading={loading}/>
 
       <MediaDisplay media={media} toggleFilter={toggleFilter} filter={filter} toggleSearch={toggleSearch} searchArr={searchArr} deleteMedia={deleteMedia} setNewId={setNewId} showEditForm={showEditForm} setShowEditForm={setShowEditForm} />
 
