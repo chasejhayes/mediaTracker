@@ -26,14 +26,16 @@ function App() {
   const [filter, setFilter] = useState('default')
   const [toggleFilter, setToggleFilter] = useState(false)
 
+  const BASE_URL = import.meta.env.VITE_API_URL
+
 
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/media')
+    axios.get(`${BASE_URL}/api/media`)
       .then((response) => {
         setMedia(response.data)
       })
-  }, [])
+  }, [BASE_URL])
 
   function addMedia(e) {
     e.preventDefault()
@@ -42,7 +44,7 @@ function App() {
       rating: newRating,
       dateFinished: newFinishDate
     }
-    axios.post('http://localhost:3001/api/media', titleObject)
+    axios.post(`${BASE_URL}/api/media`, titleObject)
       .then(res => {
         console.log(res)
         setMedia(media.concat(res.data))
@@ -57,7 +59,7 @@ function App() {
   }
 
   function deleteMedia(id) {
-    axios.delete(`http://localhost:3001/api/media/${id}`)
+    axios.delete(`${BASE_URL}/api/media/${id}`)
       .then(() => {
         setMedia(media.filter(item => item.id !== id))
       })
@@ -69,7 +71,7 @@ function App() {
     console.log(id)
 
     axios.patch(
-      `http://localhost:3001/api/media/${id}`,
+      `${BASE_URL}/api/media/${id}`,
       {
         rating: newRating,
         title: newTitle,
