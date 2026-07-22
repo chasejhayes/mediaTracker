@@ -10,6 +10,9 @@ import SortMenu from './components/SortMenu.jsx'
 import UserForm from './components/UserForm.jsx'
 import MediaDisplay from './components/MediaDisplay.jsx'
 import Loading from './components/Loading.jsx'
+import Empty from './components/Empty.jsx'
+
+
 
 
 
@@ -77,14 +80,12 @@ function App() {
   function deleteMedia(id) {
     axios.delete(`${BASE_URL}/api/media/${id}`)
       .then(() => {
-        console.log(media.length)
         setMedia(media.filter(item => item.id !== id))
-        console.log(media.length)
         if (media.length === 1) {
           setEmpty(true)
         }
-        }
-    )
+      }
+      )
   }
 
   function editMedia(e) {
@@ -113,12 +114,6 @@ function App() {
     setShowEditForm(false)
   }
 
-  function handleEmpty(){
-    if(empty===true)
-    return (
-      <div>Add Media!</div>
-    )
-  }
 
 
 
@@ -139,7 +134,7 @@ function App() {
 
       <Loading text="Loading content" loading={loading} />
 
-      {handleEmpty()}
+      <Empty text="Add Media!" empty={empty}/>
 
       <MediaDisplay media={media} toggleFilter={toggleFilter} filter={filter} toggleSearch={toggleSearch} searchArr={searchArr} deleteMedia={deleteMedia} setNewId={setNewId} showEditForm={showEditForm} setShowEditForm={setShowEditForm} />
 
