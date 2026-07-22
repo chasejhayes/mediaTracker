@@ -28,6 +28,7 @@ function App() {
   const [filter, setFilter] = useState('default')
   const [toggleFilter, setToggleFilter] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [empty, setEmpty] = useState(false)
 
   const BASE_URL = import.meta.env.VITE_API_URL
 
@@ -36,12 +37,20 @@ function App() {
   useEffect(() => {
     axios.get(`${BASE_URL}/api/media`)
       .then((response) => {
-        setMedia(response.data)
+        if (response.data.length > 0) {
+          console.log(response.data)
+          setMedia(response.data)
+        } else {
+          setEmpty(true)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
       })
       .finally(() => {
-      setLoading(false)
+        setLoading(false)
       })
-      }, [BASE_URL])
+  }, [BASE_URL])
 
   function addMedia(e) {
     e.preventDefault()
@@ -58,6 +67,7 @@ function App() {
         setNewTitle('')
         setNewRating('')
         setNewFinishDate('')
+        setEmpty(false)
 
         console.log(media)
       })
@@ -67,8 +77,14 @@ function App() {
   function deleteMedia(id) {
     axios.delete(`${BASE_URL}/api/media/${id}`)
       .then(() => {
+        console.log(media.length)
         setMedia(media.filter(item => item.id !== id))
-      })
+        console.log(media.length)
+        if (media.length === 1) {
+          setEmpty(true)
+        }
+        }
+    )
   }
 
   function editMedia(e) {
@@ -97,6 +113,13 @@ function App() {
     setShowEditForm(false)
   }
 
+  function handleEmpty(){
+    if(empty===true)
+    return (
+      <div>Add Media!</div>
+    )
+  }
+
 
 
 
@@ -104,7 +127,7 @@ function App() {
     <div>
       <Header text="Media Tracker" id="header_div" />
       <Button text="Add Media" setShowForm={setShowForm} showForm={showForm} />
-      <SortMenu text="Sort By:" htmlFor="media" media={media} value={sort} setSort={setSort} setMedia={setMedia}/>
+      <SortMenu text="Sort By:" htmlFor="media" media={media} value={sort} setSort={setSort} setMedia={setMedia} />
 
       <UserForm onSubmit={addMedia} newTitle={newTitle} setNewTitle={setNewTitle} newRating={newRating} setNewRating={setNewRating} newFinishDate={newFinishDate} setNewFinishDate={setNewFinishDate} showForm={showForm} />
 
@@ -114,7 +137,9 @@ function App() {
 
       <FilterMenu media={media} filter={filter} setFilter={setFilter} toggleFilter={toggleFilter} setToggleFilter={setToggleFilter} />
 
-      <Loading text="Loading content" loading={loading}/>
+      <Loading text="Loading content" loading={loading} />
+
+      {handleEmpty()}
 
       <MediaDisplay media={media} toggleFilter={toggleFilter} filter={filter} toggleSearch={toggleSearch} searchArr={searchArr} deleteMedia={deleteMedia} setNewId={setNewId} showEditForm={showEditForm} setShowEditForm={setShowEditForm} />
 
