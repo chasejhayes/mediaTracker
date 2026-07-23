@@ -57,8 +57,19 @@ function App() {
       })
   }, [BASE_URL])
 
+  // 
+
   function addMedia(e) {
     e.preventDefault()
+    function sortByTitle() {
+      console.log('func ran')
+      const sortedMedia = [...media]
+      return setMedia(
+        sortedMedia.toSorted((a, b) => a.title.localeCompare(b.title))
+      )
+      
+    }
+
     let titleObject = {
       title: newTitle,
       rating: newRating,
@@ -67,8 +78,14 @@ function App() {
     axios.post(`${BASE_URL}/api/media`, titleObject)
       .then(res => {
         console.log(res)
-        setMedia(media.concat(res.data))
-
+        setMedia([res.data].concat(media))
+        if (sort === 'default') {
+          console.log(sort)
+        } else if (sort === 'al') {
+          console.log(sort)
+          console.log(media)
+          sortByTitle()
+        }
         setNewTitle('')
         setNewRating('')
         setNewFinishDate('')
@@ -134,9 +151,9 @@ function App() {
 
       <Loading text="Loading content" loading={loading} />
 
-      <Empty text="Add Media!" empty={empty}/>
+      <Empty text="Add Media!" empty={empty} />
 
-      <Error error={error} text={`${error}`}/>
+      <Error error={error} text={`${error}`} />
 
       <MediaDisplay media={media} toggleFilter={toggleFilter} filter={filter} toggleSearch={toggleSearch} searchArr={searchArr} deleteMedia={deleteMedia} setNewId={setNewId} showEditForm={showEditForm} setShowEditForm={setShowEditForm} />
 

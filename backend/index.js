@@ -49,7 +49,7 @@ app.post('/api/media', (request, response) => {
         "id": Math.random().toString(36).slice(2)
     }
 
-    media = media.concat(newMedia)
+    media = [newMedia, ...media]
 
     response.status(201).json(newMedia)
 
