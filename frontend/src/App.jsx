@@ -42,7 +42,6 @@ function App() {
     axios.get(`${BASE_URL}/api/media`)
       .then((response) => {
         if (response.data.length > 0) {
-          console.log(response.data)
           setMedia(response.data)
         } else {
           setEmpty(true)
@@ -61,13 +60,13 @@ function App() {
 
   function addMedia(e) {
     e.preventDefault()
-    function sortByTitle() {
-      console.log('func ran')
-      const sortedMedia = [...media]
+
+    function sortByTitle(res) {
+      const sortedMedia = [res, ...media]
       return setMedia(
         sortedMedia.toSorted((a, b) => a.title.localeCompare(b.title))
       )
-      
+
     }
 
     let titleObject = {
@@ -78,20 +77,19 @@ function App() {
     axios.post(`${BASE_URL}/api/media`, titleObject)
       .then(res => {
         console.log(res)
-        setMedia([res.data].concat(media))
         if (sort === 'default') {
           console.log(sort)
+          console.log(media)
+          setMedia([res.data, ...media])
         } else if (sort === 'al') {
           console.log(sort)
           console.log(media)
-          sortByTitle()
+          sortByTitle(res.data)
         }
         setNewTitle('')
         setNewRating('')
         setNewFinishDate('')
         setEmpty(false)
-
-        console.log(media)
       })
     setShowForm(false)
   }

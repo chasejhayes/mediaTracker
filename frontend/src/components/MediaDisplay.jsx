@@ -24,6 +24,7 @@ export default function MediaDisplay({
     displayType = searchArr
   }
 
+
   return (
     <div>
       <ul id='card'>
